@@ -7,13 +7,11 @@ import (
 	"strconv"
 )
 
-func pushFile(e fsnotify.Event, msgCount int) Message {
+func pushFile(e fsnotify.Event, msgCount int) (Message, error) {
 	content, err := os.ReadFile(e.Name) // the file is inside the local directory
 	if err != nil {
 		fmt.Println(err)
-		return Message{
-			Jsonrpc: "2.0",
-		}
+		return Message{}, err
 	}
 
 	msg := Message{
@@ -21,7 +19,7 @@ func pushFile(e fsnotify.Event, msgCount int) Message {
 		Params: Parameters{Server: "home", Filename: gameFriendlyLocation(e.Name), Content: string(content)},
 		Id:     strconv.Itoa(msgCount),
 	}
-	return msg
+	return msg, nil
 }
 
 func deleteFile(e fsnotify.Event, msgCount int) Message {

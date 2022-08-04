@@ -3,35 +3,24 @@ package main
 import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
+	"github.com/grafov/bcast"
 )
 
-type Parameters struct {
-	Server   string `json:"server,omitempty"`
-	Filename string `json:"filename,omitempty"`
-	Content  string `json:"content,omitempty"`
+var configuration = Configuration{
+	RootDir:            "/tmp/bit",
+	FileRemovalAllowed: false,
 }
-
-type Message struct {
-	Jsonrpc string     `json:"jsonrpc,omitempty"`
-	Method  string     `json:"method,omitempty"`
-	Params  Parameters `json:"params,omitempty"`
-	Result  string     `json:"result,omitempty"`
-	Id      string     `json:"id,omitempty"`
-	Error   string     `json:"error,omitempty"`
-}
-
-var rootDir = "/tmp/bit"
-var fileRemovalAllowed = true
 
 func main() {
-	c := make(chan Message)
-	go websocket(c)
+	outMessages := bcast.NewGroup()
+	go outMessages.Broadcast(0)
+	go websocket(outMessages)
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 	}
 	defer watcher.Close()
-	recursivelyWatch(watcher, rootDir)
-	go fileWatcher(watcher, c)
+	recursivelyWatch(watcher, configuration.RootDir)
+	go fileWatcher(watcher, outMessages)
 
 	var input string
 	fmt.Scanln(&input)

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
+	"github.com/grafov/bcast"
 	"log"
 	"os"
 	"strings"
@@ -27,7 +28,7 @@ func recursivelyWatch(watcher *fsnotify.Watcher, directory string) {
 }
 
 func gameFriendlyLocation(filename string) string {
-	return strings.Replace(filename, rootDir, "", 1)
+	return strings.Replace(filename, configuration.RootDir+"/", "", 1)
 }
 
 func elementExists(s []string, str string) bool {
@@ -40,7 +41,7 @@ func elementExists(s []string, str string) bool {
 	return false
 }
 
-func fileWatcher(w *fsnotify.Watcher, c chan Message) {
+func fileWatcher(w *fsnotify.Watcher, outMessages *bcast.Group) {
 	msgCount := 0
 	for {
 		select {
@@ -64,7 +65,11 @@ func fileWatcher(w *fsnotify.Watcher, c chan Message) {
 			}
 
 			if e.Op == fsnotify.Write {
-				c <- pushFile(e, msgCount)
+				msg, err := pushFile(e, msgCount)
+				if err == nil {
+					fmt.Println("Sending ", msg)
+					outMessages.Send(msg)
+				}
 			}
 
 			if e.Op == fsnotify.Remove {
@@ -73,8 +78,8 @@ func fileWatcher(w *fsnotify.Watcher, c chan Message) {
 					if err != nil {
 						return
 					}
-				} else if fileRemovalAllowed {
-					c <- deleteFile(e, msgCount)
+				} else if configuration.FileRemovalAllowed {
+					outMessages.Send(deleteFile(e, msgCount))
 				}
 			}
 
