@@ -2,9 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hi!</title>
+    <title>Bitburner Remote Settings</title>
 </head>
 <body>
+<svg
+        width="100mm"
+        height="100mm"
+        viewBox="0 0 129.67229 129.64581"
+        id="svg5"
+        xml:space="preserve"
+        xmlns="http://www.w3.org/2000/svg"
+><defs
+     id="defs2" /><g
+        id="layer1"
+        transform="translate(-2.8379028,-138.40902)"><g
+       id="g17"
+       transform="matrix(0.26458333,0,0,0.26458333,37.339569,41.611207)"><g
+         id="g11-3"
+         style="fill:#07d337;fill-opacity:1;stroke:none;stroke-opacity:1"
+         transform="translate(-260.0403,464.24899)"><path
+           d="m 413.8403,391.60101 h -78.3 c -11.3,0 -20.4,-9.1 -20.4,-20.4 v -29.5 c -12.5,-3.8 -24.6,-8.9 -36.2,-15.1 l -20.9,20.9 c -7.7,7.7 -21.2,7.7 -28.9,0 l -55.4,-55.4 c -8,-8 -8,-20.9 0,-28.9 l 21,-21 c -6.1,-11.5 -11.1,-23.6 -14.9,-36.1 h -29.8 c -11.3,0 -20.4,-9.1 -20.4,-20.4 v -78.3 c 0,-11.3 9.1,-20.4 20.4,-20.4 h 30.1 c 3.8,-12.4 8.8,-24.3 14.9,-35.8 l -21.3,-21.3 c -3.8,-3.8 -6,-9 -6,-14.4 0,-5.4 2.2,-10.6 6,-14.4 l 55.4,-55.4 c 7.7,-7.7 21.2,-7.7 28.9,0 l 21.5,21.5 c 11.4,-6.1 23.3,-11 35.6,-14.7 v -30.5 c 0,-11.3 9.1,-20.4 20.4,-20.4 h 78.3 c 11.3,0 20.4,9.1 20.4,20.4 v 30.4 c 12.3,3.8 24.2,8.7 35.6,14.7 l 21.5,-21.5 c 8,-8 20.9,-8 28.9,0 l 55.4,55.4 c 3.8,3.8 6,9 6,14.4 0,5.4 -2.2,10.6 -6,14.4 l -21.3,21.3 c 6.1,11.4 11.1,23.4 14.9,35.8 h 30.1 c 11.3,0 20.4,9.1 20.4,20.4 v 78.3 c 0,11.3 -9.1,20.4 -20.4,20.4 h -29.8 c -3.8,12.5 -8.8,24.5 -14.9,36.1 l 21,21 c 3.8,3.8 6,9 6,14.4 0,5.4 -2.2,10.6 -6,14.4 l -55.4,55.4 c -8,8 -20.9,8 -28.9,0 l -20.9,-20.9 c -11.6,6.2 -23.7,11.2 -36.2,15.1 v 29.5 c 0,11.5 -9.2,20.6 -20.4,20.6 z"
+           id="path9-6"
+           style="fill:#07d337;fill-opacity:1;stroke:none;stroke-opacity:1" /></g><g
+        id="g254"
+        transform="matrix(0.7642797,0,0,0.72018079,-65.954645,440.66624)"><g
+           id="g199">
+	<g
+            id="g197">
+		<path
+                d="m 398.239,235.891 -0.278,-1.111 C 357.041,106.465 235.114,15.368 229.929,11.572 L 214.191,0 215.21,19.441 c 0,0.834 2.869,76.193 -70.176,138.868 -79.34,68.138 -78.878,124.334 -78.692,154.515 l 0.094,4.166 c 0,82.302 60.399,143.839 146.811,153.984 -4.704,-0.739 -9.509,-1.698 -14.331,-3.172 -27.867,-8.61 -44.16,-28.144 -47.308,-56.289 l -0.74,-5.554 c -2.5,-21.756 -5.74,-48.697 41.845,-99.801 17.775,-19.071 33.236,-39.624 46.012,-61.01 l 6.388,-10.738 8.424,9.257 c 25.182,27.495 44.438,55.269 57.399,82.302 11.942,23.886 12.684,61.659 11.757,69.713 -4.536,41.105 -34.254,71.749 -74.063,76.192 -2.595,0.296 -6.479,0.583 -11.234,0.689 0.418,0.003 0.816,0.051 1.236,0.051 94.06,0 167.66,-75.637 167.66,-172.197 0.001,-23.143 -7.776,-62.86 -8.053,-64.526 z"
+                id="path195" />
+	</g>
+</g></g></g></g>
+</svg>
+
+<h2>Bitburner Remote Settings</h2>
+<h4>Settings with an * only get applied on restart</h4>
+<h4>Settings with two *'s WILL BREAK THE APPLICATION!</h4>
+
+<p>Allow removing files </p> <button class="setting" id="fileRemovalAllowed" onclick="toggleSetting('allowDeleteFile')">Yes</button>
+<p>RFA Port* </p> <input class="setting" id="rfaPort" type="number"  />
+<p>Game file directory** </p> <input class="setting" id="rootDir" type="text"  />
+<p>Web enabled* </p> <button class="setting" id="webEnabled" >Yes</button>
+<p>Web settings port* </p> <input class="setting" id="webPort" type="number" />
+
+<br/><br/>
+<button onclick="applySettings()">Apply</button>
 
 </body>
+
+<script>
+    'use strict';
+
+    const origin = window.location.origin;
+
+    function retrieveSettings() {
+		const promise = fetch(origin + "/getSettings");
+
+		promise.then(response => {
+			if (response.status !== 200) {
+				console.log('Looks like there was a problem. Status Code: ' +
+						response.status);
+				return;
+			}
+			response.json().then(data => {
+				if(data.hasOwnProperty('fileRemovalAllowed'))
+					document.getElementById('fileRemovalAllowed').innerText = data.fileRemovalAllowed? "Yes":"No";
+				if(data.hasOwnProperty('rfaPort'))
+					document.getElementById('rfaPort').value = data.rfaPort;
+				if(data.hasOwnProperty('rootDir'))
+					document.getElementById('rootDir').value = data.rootDir;
+				if(data.hasOwnProperty('webEnabled'))
+					document.getElementById('webEnabled').innerText = data.webEnabled? "Yes":"No";
+				if(data.hasOwnProperty('webPort'))
+					document.getElementById('webPort').value = data.webPort;
+
+			}).catch(error => {
+				console.log(error.message);
+			})
+		})
+    }
+
+	function applySettings() {
+		const settings = {};
+		for (const el of document.getElementsByClassName("setting")) {
+			if(el.innerText)
+				settings[el.id] = el.innerText === "Yes";
+			else if (el.type === "number")
+				settings[el.id] = parseInt(el.value);
+			else
+				settings[el.id] = el.value;
+		}
+		console.log("Applied ", settings);
+
+		const xmlhttp = new XMLHttpRequest();
+		xmlhttp.open("POST", origin + "/setSettings", true);
+		xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+		xmlhttp.send('settings=' + encodeURIComponent(JSON.stringify(settings)));
+	}
+
+	function toggleSetting(setting) {
+        const el = document.getElementById(setting);
+        if(el.innerText === "Yes")
+            el.innerText = "No";
+        else
+            el.innerText = "Yes";
+    }
+
+	retrieveSettings();
+</script>
 </html>
