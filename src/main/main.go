@@ -9,6 +9,8 @@ import (
 //go:generate go run web/includeWebFiles.go
 
 func main() {
+	loadConfiguration()
+
 	if configuration.WebEnabled {
 		go webServer()
 	}

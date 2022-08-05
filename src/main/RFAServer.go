@@ -65,11 +65,11 @@ func websocket(outMessages *bcast.Group) {
 				msg.Jsonrpc = "2.0"
 				marshal, err := json.Marshal(msg)
 				if err != nil {
-					log.Printf("JSON parsing error: #{err}")
+					log.Printf("JSON parsing error: ", err)
 				}
 				err = wsutil.WriteServerMessage(conn, ws.OpCode(1), marshal)
 				if err != nil {
-					log.Printf("Message send error: #{err}")
+					log.Printf("Message send error: ", err)
 				}
 			}
 		}()

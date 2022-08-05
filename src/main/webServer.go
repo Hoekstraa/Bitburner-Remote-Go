@@ -41,6 +41,7 @@ func webServer() {
 
 		configuration = conf
 		fmt.Println("Applied settings; ", configuration)
+		saveConfiguration()
 	})
 
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(configuration.WebPort), nil))
