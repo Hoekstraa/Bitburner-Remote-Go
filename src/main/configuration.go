@@ -11,7 +11,7 @@ type Configuration struct {
 var configuration = Configuration{
 	FileRemovalAllowed: false,
 	RFAPort:            12525,
-	RootDir:            "/tmp/bit",
+	RootDir:            ".",
 	WebEnabled:         true,
 	WebPort:            12526,
 }

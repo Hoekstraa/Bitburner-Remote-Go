@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/grafov/bcast"
 	"log"
@@ -11,7 +10,6 @@ import (
 )
 
 func recursivelyWatch(watcher *fsnotify.Watcher, directory string) {
-	fmt.Println("Adding ", directory)
 	if elementExists(watcher.WatchList(), directory) {
 		return
 	}
@@ -23,7 +21,7 @@ func recursivelyWatch(watcher *fsnotify.Watcher, directory string) {
 
 	for _, f := range files {
 		if f.IsDir() {
-			recursivelyWatch(watcher, directory+"/"+f.Name())
+			recursivelyWatch(watcher, directory+string(filepath.Separator)+f.Name())
 		}
 	}
 }

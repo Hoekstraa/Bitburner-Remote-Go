@@ -23,6 +23,7 @@ func main() {
 	recursivelyWatch(watcher, configuration.RootDir)
 	go fileWatcher(watcher, outMessages)
 
+	fmt.Println("Press any key to stop the server.")
 	var input string
 	fmt.Scanln(&input)
 }
