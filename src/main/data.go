@@ -14,8 +14,3 @@ type Message struct {
 	Id      string     `json:"id,omitempty"`
 	Error   string     `json:"error,omitempty"`
 }
-
-type Configuration struct {
-	RootDir            string `json:"rootDir"`
-	FileRemovalAllowed bool   `json:"fileRemovalAllowed"`
-}

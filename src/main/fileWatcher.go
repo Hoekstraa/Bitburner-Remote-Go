@@ -6,6 +6,7 @@ import (
 	"github.com/grafov/bcast"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -28,7 +29,7 @@ func recursivelyWatch(watcher *fsnotify.Watcher, directory string) {
 }
 
 func gameFriendlyLocation(filename string) string {
-	return strings.Replace(filename, configuration.RootDir+"/", "", 1)
+	return strings.Replace(filename, configuration.RootDir+string(filepath.Separator), "", 1)
 }
 
 func elementExists(s []string, str string) bool {
@@ -67,7 +68,6 @@ func fileWatcher(w *fsnotify.Watcher, outMessages *bcast.Group) {
 			if e.Op == fsnotify.Write {
 				msg, err := pushFile(e, msgCount)
 				if err == nil {
-					fmt.Println("Sending ", msg)
 					outMessages.Send(msg)
 				}
 			}

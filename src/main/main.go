@@ -6,12 +6,13 @@ import (
 	"github.com/grafov/bcast"
 )
 
-var configuration = Configuration{
-	RootDir:            "/tmp/bit",
-	FileRemovalAllowed: false,
-}
+//go:generate go run web/includeWebFiles.go
 
 func main() {
+	if configuration.WebEnabled {
+		go webServer()
+	}
+
 	outMessages := bcast.NewGroup()
 	go outMessages.Broadcast(0)
 	go websocket(outMessages)
